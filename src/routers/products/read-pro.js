@@ -1,0 +1,47 @@
+const express = require("express")
+const router = new express.Router()
+const product = require("../../models/product")
+const auth = require("../../middleware/auth")
+const fs = require("fs")
+
+router.get("/read-pro", async (req, res) => {
+    try {
+        const proData = await product.find()
+        res.status(200).send(proData)
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({message: "Internal server error"})
+    }
+})
+
+router.get("/read-pro-half", async (req, res) => {
+    try {
+        const proData = await product.find({},{name: 1,desc: 1, img: 1, price: 1})
+        res.status(200).send(proData)
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({message: "Internal server error"})
+    }
+})
+
+router.get("/read-pro-img/:filename", async (req, res) => {
+    try {
+        const fileName = req.params.filename
+        const imgPath = `src/img/product/${fileName}`
+
+        fs.access(imgPath, fs.constants.F_OK, (err) => {
+            if (err) {
+                res.status(404).json({ message: "Image not found" })
+            } else {
+                const imageData = fs.createReadStream(imgPath);
+                imageData.pipe(res);
+            }
+        })
+
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ message: "Internal server error" })
+    }
+})
+
+module.exports = router
