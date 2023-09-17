@@ -5,6 +5,8 @@ const port = process.env.PORT || 3000
 require("dotenv").config()
 require(path.join(__dirname, "./db/dbCon"))
 const cookieParser = require("cookie-parser")
+const cors = require("cors")
+
 const loginRouter = require("./routers/authentication/login")
 const signupRouter = require("./routers/authentication/signup")
 const logoutRouter = require("./routers/authentication/logout")
@@ -32,6 +34,11 @@ const createDealRouter = require("./routers/deal/create-deal")
 const readDealRouter = require("./routers/deal/read-deal")
 const deleteDealRouter = require("./routers/deal/delete-deal")
 
+const allowedOrigin = "http://localhost:5173" 
+
+app.use(cors({
+    origin: allowedOrigin
+}))
 app.use(cookieParser())
 app.use(express.json())
 
