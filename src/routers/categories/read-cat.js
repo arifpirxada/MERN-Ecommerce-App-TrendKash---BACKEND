@@ -3,7 +3,7 @@ const router = new express.Router()
 const cat = require("../../models/cat-model")
 const auth = require("../../middleware/auth")
 
-router.get("/cat-read-admin", auth, async (req, res) => {
+router.get("/cat-read-admin", async (req, res) => {
     try {
         const catData = await cat.find()
         res.status(200).send(catData)
