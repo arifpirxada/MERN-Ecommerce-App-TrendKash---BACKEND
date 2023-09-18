@@ -60,7 +60,7 @@ router.post("/create-pro", (req, res) => {
                         stock: proData.stock,
                         img: imgArr,
                         brand: proData.brand,
-                        ratings: proData.ratings,
+                        ratings: [{}],
                         keywords: proData.keywords,
                         cat: proData.cat
                     })
