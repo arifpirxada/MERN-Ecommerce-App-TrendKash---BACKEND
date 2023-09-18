@@ -34,6 +34,11 @@ const createDealRouter = require("./routers/deal/create-deal")
 const readDealRouter = require("./routers/deal/read-deal")
 const deleteDealRouter = require("./routers/deal/delete-deal")
 
+const createContactRouter = require("./routers/contact/create-contact")
+const readContactRouter = require("./routers/contact/read-contact")
+const updateContactRouter = require("./routers/contact/update-contact")
+const deleteContactRouter = require("./routers/contact/delete-contact")
+
 const allowedOrigin = "http://localhost:5173" 
 
 app.use(cors({
@@ -86,6 +91,12 @@ app.use(createDealRouter)
 app.use(readDealRouter)
 app.use(deleteDealRouter)
 
+// contact routes
+
+app.use(createContactRouter)
+app.use(readContactRouter)
+app.use(updateContactRouter)
+app.use(deleteContactRouter)
 
 
 app.listen(port, () => {
