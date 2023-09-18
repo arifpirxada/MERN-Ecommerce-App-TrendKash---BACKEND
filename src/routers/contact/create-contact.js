@@ -1,13 +1,17 @@
 const express = require("express")
 const router = new express.Router()
 const contact = require("../../models/contact")
+const moment = require("moment")
+
+const currentDate = moment()
 
 router.post("/create-contact", async (req, res) => {
     try {
         const contactData = req.body
         const newData = new contact({
             email: contactData.email,
-            message: contactData.message
+            message: contactData.message,
+            date: currentDate.format("DD-MM-YYYY HH:mm:ss")
         })
 
         await newData.save()
