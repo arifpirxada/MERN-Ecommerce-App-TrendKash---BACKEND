@@ -12,7 +12,6 @@ const productSchema = new mongoose.Schema(
         },
         details: {
             type: [Object],
-            required: true
         },
         price: {
             type: Number,
@@ -28,7 +27,6 @@ const productSchema = new mongoose.Schema(
         },
         brand: {
             type: String,
-            required: true
         },
         ratings: {
             type: [Object]
