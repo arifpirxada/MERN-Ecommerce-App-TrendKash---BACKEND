@@ -55,14 +55,14 @@ router.post("/create-pro", (req, res) => {
                     const newData = new product({
                         name: proData.name,
                         desc: proData.desc,
-                        details: proData.details,
+                        details: JSON.parse(proData.details),
                         price: proData.price,
                         stock: proData.stock,
                         img: imgArr,
                         brand: proData.brand,
                         ratings: [{}],
-                        keywords: proData.keywords,
-                        cat: proData.cat
+                        keywords: JSON.parse(proData.keywords),
+                        cat: JSON.parse(proData.cat)
                     })
 
                     await newData.save()

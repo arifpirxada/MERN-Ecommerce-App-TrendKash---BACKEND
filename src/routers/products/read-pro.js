@@ -4,9 +4,10 @@ const product = require("../../models/product")
 const auth = require("../../middleware/auth")
 const fs = require("fs")
 
-router.get("/read-pro", async (req, res) => {
+router.get("/read-pro/:id", async (req, res) => {
     try {
-        const proData = await product.find()
+        const _id = req.params.id
+        const proData = await product.findById(_id)
         res.status(200).send(proData)
     } catch (e) {
         console.log(e);
@@ -16,7 +17,7 @@ router.get("/read-pro", async (req, res) => {
 
 router.get("/read-pro-half", async (req, res) => {
     try {
-        const proData = await product.find({},{name: 1,desc: 1, img: 1, price: 1})
+        const proData = await product.find({},{name: 1,desc: 1, img: 1, price: 1, ratings: 1})
         res.status(200).send(proData)
     } catch (e) {
         console.log(e);

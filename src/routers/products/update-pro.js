@@ -27,7 +27,6 @@ router.post("/update-pro-img", async (req, res) => {
 
                 // For deleting the existing product images
                 var imgData = await product.findById(req.body.id, { img: 1, _id: 0 })
-                console.log(imgData)
                 if (imgData) {
                     for (const elem of imgData.img) {
                         fs.unlink(`src/img/product/${elem}`, (e) => {
@@ -71,7 +70,7 @@ router.post("/update-pro-img", async (req, res) => {
 
                 if (imgArr) {
                     await product.findByIdAndUpdate(req.body.id, imgObj)
-                    res.status(201).json({ message: "Insertion successful" })
+                    res.status(201).json({ message: "Updation successful" })
                 }
 
             }
