@@ -11,6 +11,7 @@ router.post("/create-contact", async (req, res) => {
         const newData = new contact({
             email: contactData.email,
             message: contactData.message,
+            view: 0,
             date: currentDate.format("DD-MM-YYYY HH:mm:ss")
         })
 

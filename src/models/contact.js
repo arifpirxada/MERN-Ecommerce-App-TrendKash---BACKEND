@@ -9,6 +9,10 @@ const contactSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    view: {
+        type: Number,
+        required: true
+    },
     date: {
         type: String,
         required: true
