@@ -12,4 +12,16 @@ router.get("/read-contact", async (req, res) => {
     }
 })
 
+// For Showing unread message number in admin panel
+
+router.get("/read-contact-view", async (req, res) => {
+    try {
+        const contactData = await contact.countDocuments({view: 0})
+        res.status(200).json({unseen: contactData})
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({message: "Internal server error"})
+    }
+})
+
 module.exports = router
