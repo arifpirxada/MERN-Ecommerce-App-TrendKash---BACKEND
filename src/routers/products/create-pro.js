@@ -60,9 +60,13 @@ router.post("/create-pro", (req, res) => {
                         stock: proData.stock,
                         img: imgArr,
                         brand: proData.brand,
-                        ratings: [{}],
+                        ratings: [],
                         keywords: JSON.parse(proData.keywords),
-                        cat: JSON.parse(proData.cat)
+                        cat: JSON.parse(proData.cat),
+                        size: JSON.parse(proData.size),
+                        color: JSON.parse(proData.color),
+                        disPercentage: proData.disPercentage,
+                        oldPrice: proData.oldPrice 
                     })
 
                     await newData.save()
