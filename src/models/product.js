@@ -7,8 +7,7 @@ const productSchema = new mongoose.Schema(
             required: true
         },
         desc: {
-            type: String,
-            required: true
+            type: String
         },
         details: {
             type: [Object],
@@ -33,9 +32,21 @@ const productSchema = new mongoose.Schema(
         },
         keywords: {
             type: [String]
-        }, 
+        },
         cat: {
             type: [String]
+        },
+        size: {
+            type: [String]
+        },
+        color: {
+            type: [String]
+        },
+        disPercentage: {
+            type: Number
+        },
+        oldPrice: {
+            type: Number
         }
     }
 )
