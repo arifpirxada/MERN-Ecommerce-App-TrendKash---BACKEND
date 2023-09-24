@@ -18,6 +18,7 @@ router.post("/login", async (req, res) => {
                 await register.findByIdAndUpdate(user[0]._id, tokenData)
 
                 res.cookie("auth", tokenData.token, {
+                    expires: new Date(Date.now() + 2 * 7 * 24 * 60 * 60 * 1000),
                     httpOnly: true,
                     sameSite: "strict"
                 })

@@ -18,6 +18,7 @@ router.post("/signup", async (req, res) => {
         await newData.save()
 
         res.cookie("auth", newData.token, {
+            expires: new Date(Date.now() + 2 * 7 * 24 * 60 * 60 * 1000),
             httpOnly: true,
             sameSite: "strict"
         })
