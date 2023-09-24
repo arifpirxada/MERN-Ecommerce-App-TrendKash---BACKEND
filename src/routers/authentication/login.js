@@ -17,13 +17,16 @@ router.post("/login", async (req, res) => {
                 }
                 await register.findByIdAndUpdate(user[0]._id, tokenData)
 
-                res.cookie("auth", tokenData.token)
+                res.cookie("auth", tokenData.token, {
+                    httpOnly: true,
+                    sameSite: "strict"
+                })
                 res.status(200).json({ message: 'Login success' })
             } else {
-                res.status(400).json({ message: 'Wrong password' })
+                res.status(400).json({ message: 'Invalid Credentials!' })
             }
         } else {
-            res.status(400).json({ message: 'User not found' })
+            res.status(400).json({ message: 'Invalid Credentials!' })
         }
     } catch (e) {
         console.log(e)

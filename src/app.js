@@ -10,6 +10,7 @@ const cors = require("cors")
 const loginRouter = require("./routers/authentication/login")
 const signupRouter = require("./routers/authentication/signup")
 const logoutRouter = require("./routers/authentication/logout")
+const authorization = require("./routers/authentication/authorization")
 
 const createCatRouter = require("./routers/categories/create-cat")
 const readCatRouter = require("./routers/categories/read-cat")
@@ -39,10 +40,11 @@ const readContactRouter = require("./routers/contact/read-contact")
 const updateContactRouter = require("./routers/contact/update-contact")
 const deleteContactRouter = require("./routers/contact/delete-contact")
 
-const allowedOrigin = "http://localhost:5173" 
+const allowedOrigin = "http://localhost:5173"
 
 app.use(cors({
-    origin: allowedOrigin
+    origin: allowedOrigin,
+    credentials: true
 }))
 app.use(cookieParser())
 app.use(express.json())
@@ -57,6 +59,7 @@ app.get("/", (req, res) => {
 app.use(loginRouter)
 app.use(signupRouter)
 app.use(logoutRouter)
+app.use(authorization)
 
 // cat routes
 
