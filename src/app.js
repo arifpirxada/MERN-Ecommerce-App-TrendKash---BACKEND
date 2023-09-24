@@ -40,6 +40,8 @@ const readContactRouter = require("./routers/contact/read-contact")
 const updateContactRouter = require("./routers/contact/update-contact")
 const deleteContactRouter = require("./routers/contact/delete-contact")
 
+const createCartRouter = require("./routers/cart/add-to-cart")
+
 const allowedOrigin = "http://localhost:5173"
 
 app.use(cors({
@@ -100,6 +102,10 @@ app.use(createContactRouter)
 app.use(readContactRouter)
 app.use(updateContactRouter)
 app.use(deleteContactRouter)
+
+// cart routes
+
+app.use(createCartRouter)
 
 
 app.listen(port, () => {
