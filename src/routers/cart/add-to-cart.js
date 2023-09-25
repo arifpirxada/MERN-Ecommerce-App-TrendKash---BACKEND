@@ -36,7 +36,12 @@ router.patch("/update-cart-qty", async (req, res) => {
         const pid = req.body.pid
         const qty = req.body.qty
 
-        await cart.findOneAndUpdate({ uid, "products.pid": pid }, { $set: { "products.$.qty": qty } })
+        const updatedProduct = await cart.findOneAndUpdate({ uid, "products.pid": pid }, { $set: { "products.$.qty": qty } })
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: "Product not found in the cart" });
+        }
+
         res.status(201).json({ message: 'Updation successful' })
     } catch (e) {
         console.log(e)
@@ -60,9 +65,23 @@ router.delete("/delete-cart-product", async (req, res) => {
         }
 
         if (delProduct.products.length < 2) {
-            await cart.deleteOne({uid})
+            await cart.deleteOne({ uid })
         }
         res.status(201).json({ message: 'Deletion successful' })
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+})
+
+router.get("/read-cart-data/:uid", async (req, res) => {
+    try {
+        const uid = req.params.uid
+        const data = await cart.findOne({ uid }, { _id: 0, __v: 0, uid: 0 })
+        if (!data) {
+            return res.status(200).json({ message: "No data" })
+        }
+        res.status(200).send(data)
     } catch (e) {
         console.log(e)
         res.status(500).json({ message: 'Internal server error' })
