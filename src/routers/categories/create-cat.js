@@ -9,7 +9,8 @@ router.post("/create-cat", async (req, res) => {
         const newData = new cat({
             catName: catData.name,
             navigation: catData.navi,
-            slideTop: catData.slide
+            slideTop: catData.slide,
+            groupSlider: catData.groupSlider
         })
 
         await newData.save()
