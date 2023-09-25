@@ -56,6 +56,19 @@ router.get("/read-pro-cat/:category", async (req, res) => {
     }
 })
 
+// Router for group slider to limit products upto 6
+
+router.get("/read-pro-group-slider/:category", async (req, res) => {
+    try {
+        const category = req.params.category
+        const proData = await product.find({ cat: category }, { name: 1, desc: 1, img: 1, price: 1, ratings: 1, oldPrice: 1, disPercentage: 1 }).sort({ _id: -1 }).limit(6)
+        res.status(200).send(proData)
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ message: "Internal server error" })
+    }
+})
+
 // For Related Products ->
 
 router.post("/read-pro-related", async (req, res) => {

@@ -14,6 +14,9 @@ const catSchema = new mongoose.Schema(
         slideTop: {
             type: Number,
             required: true
+        },
+        groupSlider: {
+            type: Number
         }
     }
 )
