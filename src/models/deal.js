@@ -9,6 +9,18 @@ const dealSchema = new mongoose.Schema(
         img: {
             type: String,
             required: true
+        },
+        offer: {
+            type: String,
+            required: true
+        },
+        endDate: {
+            type: String,
+            required: true
+        },
+        cat: {
+            type: String,
+            required: true
         }
     }
 )
