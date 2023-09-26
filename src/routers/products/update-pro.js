@@ -2,6 +2,7 @@ const express = require("express")
 const router = new express.Router()
 const auth = require("../../middleware/auth")
 const product = require("../../models/product")
+const moment = require("moment")
 
 const multer = require("multer")
 const fs = require("fs")
@@ -87,6 +88,34 @@ router.patch("/update-pro", async (req, res) => {
         const _id = req.body.id
         await product.findByIdAndUpdate(_id, req.body)
         res.status(201).json({ message: 'Updation successful' })
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+})
+
+
+// To update product review ->
+
+router.patch("/update-pro-review", async (req, res) => {
+    try {
+        const currentDate = moment()
+        const _id = req.body.id
+        req.body.rating.time = currentDate.format('YYYY-MM-DD HH:mm:ss')
+        await product.findOneAndUpdate({ _id }, { $push: { ratings: req.body.rating } })
+        res.status(201).json({ message: 'Review Added' })
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+})
+
+router.patch("/delete-pro-review", async (req, res) => {
+    try {
+        const _id = req.body.id
+        const review = req.body.review
+        await product.findOneAndUpdate({ _id,"ratings.uid": req.body.uid }, { $pull: { ratings: {  review } } })
+        res.status(201).json({ message: 'Review deleted' })
     } catch (e) {
         console.log(e)
         res.status(500).json({ message: 'Internal server error' })
