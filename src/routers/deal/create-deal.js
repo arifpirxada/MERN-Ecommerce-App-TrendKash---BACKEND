@@ -43,7 +43,10 @@ router.post("/create-deal", async (req, res) => {
 
                     const newData = new deal({
                         name: req.body.name,
-                        img: req.file.filename
+                        img: req.file.filename,
+                        offer: req.body.offer,
+                        endDate: req.body.endDate,
+                        cat: req.body.cat
                     })
 
                     try {
