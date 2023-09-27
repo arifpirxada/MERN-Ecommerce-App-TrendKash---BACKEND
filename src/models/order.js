@@ -1,21 +1,5 @@
 const mongoose = require("mongoose")
 
-const productSchema = new mongoose.Schema(
-    {
-        id: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true
-        },
-        qty: {
-            type: Number,
-            required: true
-        }
-    }
-)
 
 const addressSchema = new mongoose.Schema(
     {
@@ -31,7 +15,7 @@ const addressSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        ZIPCode: {
+        PINCode: {
             type: Number,
             required: true
         }
@@ -41,8 +25,7 @@ const addressSchema = new mongoose.Schema(
 const orderSchema = new mongoose.Schema(
     {
         products: {
-            // contains id, price & quantity of products
-            type: [productSchema],
+            type: [Object],
             required: true
         },
         totalPrice: {
@@ -87,6 +70,9 @@ const orderSchema = new mongoose.Schema(
             type: String
         },
         paymentAuth: {
+            type: String
+        },
+        notes: {
             type: String
         }
     }

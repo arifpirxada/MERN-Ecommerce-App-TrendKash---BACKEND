@@ -19,18 +19,19 @@ router.post("/create-order", async (req, res) => {
             shipAddress: orderData.shipAddress,
             date: currentDate.format('DD-MM-YYYY HH:mm:ss'),
             completionDate: "Pending",
-            status: "Processing",
+            status: "Pending",
             history: [
                 {
-                    status: "Processing",
+                    status: "Pending",
                     date: currentDate.format('DD-MM-YYYY HH:mm:ss')
                 }
             ],
-            paymentType: orderData.paymentType
+            paymentType: orderData.paymentType,
+            notes: orderData.notes
         })
 
         await newData.save()
-        res.status(201).json({ message: "Insertion successful" })
+        res.status(201).json({ message: "order placed" })
     } catch (e) {
         console.log(e)
         res.status(400).json({ message: "Internal server error", error: e.message })
