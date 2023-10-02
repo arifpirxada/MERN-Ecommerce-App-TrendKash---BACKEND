@@ -6,8 +6,8 @@ const order = require("../../models/order")
 router.patch("/update-order", async (req, res) => {
     try {
         const _id = req.body.id
-        await order.findByIdAndUpdate(_id, req.body)
-        res.status(201).json({ message: 'Updation successful' })
+        await order.findByIdAndUpdate(_id, {$set: {status: req.body.status}})
+        res.status(200).json({ message: 'Updation successful' })
     } catch (e) {
         console.log(e)
         res.status(500).json({ message: 'Internal server error' })

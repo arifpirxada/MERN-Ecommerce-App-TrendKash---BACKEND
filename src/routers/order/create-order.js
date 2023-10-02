@@ -10,6 +10,7 @@ router.post("/create-order", async (req, res) => {
     try {
         
         const orderData = req.body
+        const payStatus = orderData.paymentType == "cod"? "success": "pending"
         const newData = new order({
             products: orderData.products,
             totalPrice: orderData.totalPrice,
@@ -27,7 +28,8 @@ router.post("/create-order", async (req, res) => {
                 }
             ],
             paymentType: orderData.paymentType,
-            notes: orderData.notes
+            notes: orderData.notes,
+            paymentStatus: payStatus
         })
 
         const delCart = await cart.findOneAndDelete({uid: orderData.user})
