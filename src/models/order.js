@@ -41,11 +41,11 @@ const orderSchema = new mongoose.Schema(
             required: true
         },
         address: {
-            type: [addressSchema],
+            type: addressSchema,
             required: true
         },
         shipAddress: {
-            type: [Object]
+            type: Object
         },
         date: {
             type: String,
@@ -65,6 +65,9 @@ const orderSchema = new mongoose.Schema(
         paymentType: {
             type: String,
             required: true
+        },
+        paymentStatus: {
+            type: String,
         },
         transactionId: {
             type: String
