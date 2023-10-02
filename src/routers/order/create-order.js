@@ -1,8 +1,8 @@
 const express = require("express")
 const router = new express.Router()
-const auth = require("../../middleware/auth")
 const order = require("../../models/order")
 const moment = require("moment")
+const cart = require("../../models/cart")
 
 const currentDate = moment()
 
@@ -29,6 +29,8 @@ router.post("/create-order", async (req, res) => {
             paymentType: orderData.paymentType,
             notes: orderData.notes
         })
+
+        const delCart = await cart.findOneAndDelete({uid: orderData.user})
 
         await newData.save()
         res.status(201).json({ message: "order placed" })
