@@ -47,6 +47,8 @@ const adminSignupRouter = require("./routers/authentication/admin/ad-signup")
 const adminLogoutRouter = require("./routers/authentication/admin/ad-logout")
 const adminAuthorization = require("./routers/authentication/admin/ad-authorization")
 
+const aboutRouter = require("./routers/about/about")
+
 const allowedOrigin = "http://localhost:5173"
 
 app.use(cors({
@@ -119,6 +121,9 @@ app.use(adminSignupRouter)
 app.use(adminLogoutRouter)
 app.use(adminAuthorization)
 
+// about router
+
+app.use(aboutRouter)
 
 
 app.listen(port, () => {
