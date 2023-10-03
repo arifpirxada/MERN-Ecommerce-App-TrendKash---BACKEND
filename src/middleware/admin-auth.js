@@ -1,15 +1,15 @@
 const jwt = require('jsonwebtoken')
-const register = require('../models/register')
+const adminRegister = require('../models/admin-register');
 
-async function auth (req, res, next) {
+async function adminAuth (req, res, next) {
     try {
-        const token = req.cookies.auth;
+        const token = req.cookies.authad;
         const verify = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        const user = await register.find({ token: token }).count();
+        const user = await adminRegister.find({ token: token }).count();
         if (user === 0) {
             res.status(200).json({ message: "notLogged" });
         } else {
-            req.id = verify.id;
+            req.id = verify.id
             req.log = true;
             next();
         }
@@ -19,4 +19,4 @@ async function auth (req, res, next) {
 }
 
 
-module.exports = auth
+module.exports = adminAuth

@@ -42,6 +42,11 @@ const deleteContactRouter = require("./routers/contact/delete-contact")
 
 const createCartRouter = require("./routers/cart/add-to-cart")
 
+const adminLoginRouter = require("./routers/authentication/admin/ad-login")
+const adminSignupRouter = require("./routers/authentication/admin/ad-signup")
+const adminLogoutRouter = require("./routers/authentication/admin/ad-logout")
+const adminAuthorization = require("./routers/authentication/admin/ad-authorization")
+
 const allowedOrigin = "http://localhost:5173"
 
 app.use(cors({
@@ -106,6 +111,14 @@ app.use(deleteContactRouter)
 // cart routes
 
 app.use(createCartRouter)
+
+// admin auth routes
+
+app.use(adminLoginRouter)
+app.use(adminSignupRouter)
+app.use(adminLogoutRouter)
+app.use(adminAuthorization)
+
 
 
 app.listen(port, () => {
