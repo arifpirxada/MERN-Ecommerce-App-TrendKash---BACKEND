@@ -2,6 +2,7 @@ const express = require("express")
 const router = new express.Router()
 const cart = require("../../models/cart");
 const product = require("../../models/product");
+const moment = require("moment")
 
 router.post("/add-to-cart", async (req, res) => {
     try {
@@ -104,6 +105,27 @@ router.get("/read-cart-data/:uid", async (req, res) => {
             return res.status(200).json({ message: "No data" })
         }
         res.status(200).send(data)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+})
+
+
+// Delete cart products which are more than 7 days in the cart ->
+
+router.delete("/refresh-cart-data", async (req, res) => {
+    try {
+        const currentDate = moment()
+        const data = await cart.find()
+
+        data.map( async (element) => {
+            if (currentDate.isAfter(element.expires_at)) {
+                await cart.deleteOne({_id: element._id})
+            }
+        })
+
+        res.status(200).json({ message: "Refresh successful" })
     } catch (e) {
         console.log(e)
         res.status(500).json({ message: 'Internal server error' })

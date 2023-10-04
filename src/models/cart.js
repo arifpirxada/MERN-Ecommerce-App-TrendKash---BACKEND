@@ -9,6 +9,14 @@ const cartSchema = new mongoose.Schema(
         products: {
             type: [Object],
             required: true,
+        },
+        expires_at: {
+            type: Date,
+            default: function () {
+                const currentDate = new Date();
+                currentDate.setDate(currentDate.getDate() + 7);
+                return currentDate;
+              }
         }
     }
 )
