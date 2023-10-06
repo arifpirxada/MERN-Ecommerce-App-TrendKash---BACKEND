@@ -25,6 +25,7 @@ const createProRouter = require("./routers/products/create-pro")
 const readProRouter = require("./routers/products/read-pro")
 const updateProRouter = require("./routers/products/update-pro")
 const deleteProRouter = require("./routers/products/delete-pro")
+const searchProRouter = require("./routers/products/search-pro")
 
 const createOrderRouter = require("./routers/order/create-order")
 const readOrderRouter = require("./routers/order/read-order")
@@ -89,6 +90,7 @@ app.use(createProRouter)
 app.use(readProRouter)
 app.use(updateProRouter)
 app.use(deleteProRouter)
+app.use(searchProRouter)
 
 // order routes
 
