@@ -24,4 +24,19 @@ router.patch("/update-order", async (req, res) => {
   }
 });
 
+router.patch("/update-order-payment", async (req, res) => {
+  try {
+    await order.findOneAndUpdate(
+      {
+        payment_request_id: req.body.payment_request_id,
+      },
+      req.body
+    );
+    res.status(200).json({ message: "Updation successful" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router;

@@ -69,10 +69,10 @@ const orderSchema = new mongoose.Schema(
         paymentStatus: {
             type: String,
         },
-        transactionId: {
+        payment_request_id: {
             type: String
         },
-        paymentAuth: {
+        payment_id: {
             type: String
         },
         notes: {
