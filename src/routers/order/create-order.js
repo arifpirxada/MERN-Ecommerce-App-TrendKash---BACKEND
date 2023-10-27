@@ -7,7 +7,7 @@ const register = require("../../models/register");
 
 const currentDate = moment();
 
-router.post("/create-order", async (req, res) => {
+router.post("/api/create-order", async (req, res) => {
   try {
     const orderData = req.body;
     const payStatus = orderData.paymentType == "cod" ? "success" : "pending";
@@ -58,7 +58,7 @@ router.post("/create-order", async (req, res) => {
                 amount: orderData.totalPrice,
                 phone: orderData.phone,
                 buyer_name: userData.name,
-                redirect_url: "http://localhost:5173/payment-verification",
+                redirect_url: "http://localhost:3000/payment-verification", // change to "http://localhost:5173/payment-verification"
                 send_email: true,
                 send_sms: true,
                 email: userData.email,
@@ -85,9 +85,7 @@ router.post("/create-order", async (req, res) => {
         }
       } catch (e) {
         console.log(e);
-        res
-          .status(400)
-          .json({ message: "Internal server error" });
+        res.status(400).json({ message: "Internal server error" });
       }
     }
 

@@ -5,7 +5,6 @@ const port = process.env.PORT || 3000
 require("dotenv").config()
 require(path.join(__dirname, "./db/dbCon"))
 const cookieParser = require("cookie-parser")
-const cors = require("cors")
 
 const loginRouter = require("./routers/authentication/login")
 const signupRouter = require("./routers/authentication/signup")
@@ -50,12 +49,7 @@ const adminAuthorization = require("./routers/authentication/admin/ad-authorizat
 
 const aboutRouter = require("./routers/about/about")
 
-const allowedOrigin = "http://localhost:5173"
-
-app.use(cors({
-    origin: allowedOrigin,
-    credentials: true
-}))
+app.use(express.static("./dist"))
 app.use(cookieParser())
 app.use(express.json())
 

@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }).single('header-img')
 
-router.post("/create-head-cat", async (req, res) => {
+router.post("/api/create-head-cat", async (req, res) => {
     try {
         upload(req, res, async (e) => {
             if (e) {

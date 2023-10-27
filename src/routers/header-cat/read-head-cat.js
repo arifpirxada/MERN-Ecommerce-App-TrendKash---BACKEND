@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth")
 const headerCat = require("../../models/header-cat")
 const fs = require("fs")
 
-router.get("/read-head-cat", async (req, res) => {
+router.get("/api/read-head-cat", async (req, res) => {
     try {
         const catData = await headerCat.find()
         res.status(200).send(catData)
@@ -14,7 +14,7 @@ router.get("/read-head-cat", async (req, res) => {
     }
 })
 
-router.get("/read-head-img/:filename", async (req, res) => {
+router.get("/api/read-head-img/:filename", async (req, res) => {
     try {
         const fileName = req.params.filename
         const imgPath = `src/img/header-cat/${fileName}`
