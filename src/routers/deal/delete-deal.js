@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth")
 const deal = require("../../models/deal")
 const fs = require("fs")
 
-router.delete("/delete-deal", async (req, res) => {
+router.delete("/api/delete-deal", async (req, res) => {
     try {
         const _id = req.body.id
         const image = await deal.findById(_id, {img: 1, _id: 0})

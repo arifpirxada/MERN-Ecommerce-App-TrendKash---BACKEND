@@ -5,7 +5,7 @@ const moment = require("moment");
 
 const currentDate = moment();
 
-router.patch("/update-order", async (req, res) => {
+router.patch("/api/update-order", async (req, res) => {
   try {
     const _id = req.body.id;
     await order.findByIdAndUpdate(_id, {
@@ -24,7 +24,7 @@ router.patch("/update-order", async (req, res) => {
   }
 });
 
-router.patch("/update-order-payment", async (req, res) => {
+router.patch("/api/update-order-payment", async (req, res) => {
   try {
     await order.findOneAndUpdate(
       {

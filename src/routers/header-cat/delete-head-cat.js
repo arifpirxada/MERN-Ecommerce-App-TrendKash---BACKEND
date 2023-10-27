@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth")
 const headerCat = require("../../models/header-cat")
 const fs = require("fs")
 
-router.delete("/delete-head-cat", async (req, res) => {
+router.delete("/api/delete-head-cat", async (req, res) => {
     try {
         const _id = req.body.id
         const image = await headerCat.findById(_id, {catImg: 1, _id: 0})

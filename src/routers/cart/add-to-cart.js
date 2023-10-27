@@ -1,135 +1,157 @@
-const express = require("express")
-const router = new express.Router()
+const express = require("express");
+const router = new express.Router();
 const cart = require("../../models/cart");
 const product = require("../../models/product");
-const moment = require("moment")
+const moment = require("moment");
 
-router.post("/add-to-cart", async (req, res) => {
-    try {
-        const uid = req.body.uid;
-        const userProduct = req.body.product;
+router.post("/api/add-to-cart", async (req, res) => {
+  try {
+    const uid = req.body.uid;
+    const userProduct = req.body.product;
 
-        const existingCart = await cart.findOne({ uid });
+    const existingCart = await cart.findOne({ uid });
 
-        if (!existingCart) {
-            const newCart = new cart({
-                uid,
-                products: [userProduct]
-            });
+    if (!existingCart) {
+      const newCart = new cart({
+        uid,
+        products: [userProduct],
+      });
 
-            await newCart.save();
+      await newCart.save();
 
-            // Reduce Product Quantity ->
- 
-            await product.findByIdAndUpdate({ _id: userProduct.pid }, { $inc: { stock: -userProduct.qty } })
-            
-        } else if (existingCart.products.some(item => item.pid === userProduct.pid)) {
-            return res.status(200).json({ message: "Already added to cart" });
-        } else {
-            existingCart.products.push(userProduct);
-            await existingCart.save();
+      // Reduce Product Quantity ->
 
-            // Reduce Product Quantity ->
+      await product.findByIdAndUpdate(
+        { _id: userProduct.pid },
+        { $inc: { stock: -userProduct.qty } }
+      );
+    } else if (
+      existingCart.products.some((item) => item.pid === userProduct.pid)
+    ) {
+      return res.status(200).json({ message: "Already added to cart" });
+    } else {
+      existingCart.products.push(userProduct);
+      await existingCart.save();
 
-            await product.findByIdAndUpdate({ _id: userProduct.pid }, { $inc: { stock: -userProduct.qty } })
-        }
+      // Reduce Product Quantity ->
 
-        res.status(201).json({ message: "Insertion successful" })
-    } catch (e) {
-        console.log(e)
-        res.status(201).json({ message: "Internal server error" })
+      await product.findByIdAndUpdate(
+        { _id: userProduct.pid },
+        { $inc: { stock: -userProduct.qty } }
+      );
     }
-})
 
-router.patch("/update-cart-qty", async (req, res) => {
-    try {
-        const uid = req.body.uid
-        const pid = req.body.pid
-        const qty = req.body.qty
+    res.status(201).json({ message: "Insertion successful" });
+  } catch (e) {
+    console.log(e);
+    res.status(201).json({ message: "Internal server error" });
+  }
+});
 
-        // For updating Quantity in the product
-        const getQtyProduct = await cart.findOne({ uid, "products.pid": pid })
-        const qtyProduct = getQtyProduct.products.filter(item => item.pid === pid)
-        const quantityNum = parseInt(qtyProduct[0].qty) - qty
-        await product.findByIdAndUpdate({ _id: pid }, { $inc: { stock: quantityNum } })
+router.patch("/api/update-cart-qty", async (req, res) => {
+  try {
+    const uid = req.body.uid;
+    const pid = req.body.pid;
+    const qty = req.body.qty;
 
-        // Update qty here ->
-        const updatedProduct = await cart.findOneAndUpdate({ uid, "products.pid": pid }, { $set: { "products.$.qty": qty } })
+    // For updating Quantity in the product
+    const getQtyProduct = await cart.findOne({ uid, "products.pid": pid });
+    const qtyProduct = getQtyProduct.products.filter(
+      (item) => item.pid === pid
+    );
+    const quantityNum = parseInt(qtyProduct[0].qty) - qty;
+    await product.findByIdAndUpdate(
+      { _id: pid },
+      { $inc: { stock: quantityNum } }
+    );
 
-        if (!updatedProduct) {
-            return res.status(404).json({ message: "Product not found in the cart" });
-        }
+    // Update qty here ->
+    const updatedProduct = await cart.findOneAndUpdate(
+      { uid, "products.pid": pid },
+      { $set: { "products.$.qty": qty } }
+    );
 
-        res.status(201).json({ message: 'Updation successful' })
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ message: 'Internal server error' })
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found in the cart" });
     }
-})
 
-router.delete("/delete-cart-product", async (req, res) => {
-    try {
-        const uid = req.body.uid
-        const pid = req.body.pid
+    res.status(201).json({ message: "Updation successful" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
-        const delProduct = await cart.findOneAndUpdate({ uid }, { $pull: { products: { pid } } })
+router.delete("/api/delete-cart-product", async (req, res) => {
+  try {
+    const uid = req.body.uid;
+    const pid = req.body.pid;
 
-        if (!delProduct) {
-            return res.status(404).json({ message: "Product not found in the cart" });
-        }
+    const delProduct = await cart.findOneAndUpdate(
+      { uid },
+      { $pull: { products: { pid } } }
+    );
 
-        if (!delProduct.products.some(userProduct => userProduct.pid === pid)) {
-            return res.status(404).json({ message: "Product not found in the cart" });
-        }
-
-        if (delProduct.products.length < 2) {
-            await cart.deleteOne({ uid })
-        }
-
-        // Update product quantity here ->
-        const deletedProduct = delProduct.products.filter(item => item.pid === pid)
-        await product.findByIdAndUpdate({ _id: pid }, { $inc: { stock: +deletedProduct[0].qty} })
-
-        res.status(201).json({ message: 'Deletion successful' })
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ message: 'Internal server error' })
+    if (!delProduct) {
+      return res.status(404).json({ message: "Product not found in the cart" });
     }
-})
 
-router.get("/read-cart-data/:uid", async (req, res) => {
-    try {
-        const uid = req.params.uid
-        const data = await cart.findOne({ uid }, { _id: 0, __v: 0, uid: 0 })
-        if (!data) {
-            return res.status(200).json({ message: "No data" })
-        }
-        res.status(200).send(data)
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ message: 'Internal server error' })
+    if (!delProduct.products.some((userProduct) => userProduct.pid === pid)) {
+      return res.status(404).json({ message: "Product not found in the cart" });
     }
-})
 
+    if (delProduct.products.length < 2) {
+      await cart.deleteOne({ uid });
+    }
+
+    // Update product quantity here ->
+    const deletedProduct = delProduct.products.filter(
+      (item) => item.pid === pid
+    );
+    await product.findByIdAndUpdate(
+      { _id: pid },
+      { $inc: { stock: +deletedProduct[0].qty } }
+    );
+
+    res.status(201).json({ message: "Deletion successful" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/api/read-cart-data/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    const data = await cart.findOne({ uid }, { _id: 0, __v: 0, uid: 0 });
+    if (!data) {
+      return res.status(200).json({ message: "No data" });
+    }
+    res.status(200).send(data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Delete cart products which are more than 7 days in the cart ->
 
-router.delete("/refresh-cart-data", async (req, res) => {
-    try {
-        const currentDate = moment()
-        const data = await cart.find()
+router.delete("/api/refresh-cart-data", async (req, res) => {
+  try {
+    const currentDate = moment();
+    const data = await cart.find();
 
-        data.map( async (element) => {
-            if (currentDate.isAfter(element.expires_at)) {
-                await cart.deleteOne({_id: element._id})
-            }
-        })
+    data.map(async (element) => {
+      if (currentDate.isAfter(element.expires_at)) {
+        await cart.deleteOne({ _id: element._id });
+      }
+    });
 
-        res.status(200).json({ message: "Refresh successful" })
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ message: 'Internal server error' })
-    }
-})
+    res.status(200).json({ message: "Refresh successful" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
-module.exports = router
+module.exports = router;

@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }).single('deal-img')
 
-router.post("/create-deal", async (req, res) => {
+router.post("/api/create-deal", async (req, res) => {
     try {
         upload(req, res, async (e) => {
             if (e) {

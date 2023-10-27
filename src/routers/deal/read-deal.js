@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth")
 const fs = require("fs")
 const deal = require("../../models/deal")
 
-router.get("/read-deal", async (req, res) => {
+router.get("/api/read-deal", async (req, res) => {
     try {
         const dealData = await deal.find()
         res.status(200).send(dealData)
@@ -14,7 +14,7 @@ router.get("/read-deal", async (req, res) => {
     }
 })
 
-router.get("/read-deal-img/:filename", async (req, res) => {
+router.get("/api/read-deal-img/:filename", async (req, res) => {
     try {
         const fileName = req.params.filename
         const imgPath = `src/img/deal/${fileName}`
