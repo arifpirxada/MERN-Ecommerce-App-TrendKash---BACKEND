@@ -58,7 +58,7 @@ router.post("/api/create-order", async (req, res) => {
                 amount: orderData.totalPrice,
                 phone: orderData.phone,
                 buyer_name: userData.name,
-                redirect_url: "http://localhost:3000/payment-verification", // change to "http://localhost:5173/payment-verification"
+                redirect_url: "https://trendkash.vercel.app/payment-verification", // change to "http://localhost:5173/payment-verification"
                 send_email: true,
                 send_sms: true,
                 email: userData.email,
