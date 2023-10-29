@@ -49,7 +49,7 @@ const adminAuthorization = require("./routers/authentication/admin/ad-authorizat
 
 const aboutRouter = require("./routers/about/about")
 
-app.use(express.static("./dist"))
+app.use(express.static(path.join(__dirname, "../dist")))
 app.use(cookieParser())
 app.use(express.json())
 
