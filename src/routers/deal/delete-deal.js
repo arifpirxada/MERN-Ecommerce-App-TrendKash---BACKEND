@@ -12,11 +12,10 @@ router.delete("/api/delete-deal", async (req, res) => {
             if (err) {
                 console.error(`Error deleting file: ${err}`);
                 return;
-            } else {
-                await deal.findByIdAndDelete(_id)
-                res.status(200).json({ message: 'Deletion successful' })
             }
         })
+        await deal.findByIdAndDelete(_id)
+        res.status(200).json({ message: 'Deletion successful' })
     } catch (e) {
         console.log(e)
         res.status(500).json({ message: 'Internal server error' })
