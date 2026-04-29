@@ -53,10 +53,6 @@ app.use(express.static(path.join(__dirname, "../dist")))
 app.use(cookieParser())
 app.use(express.json())
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist", "index.html"));
-});
-
 // auth routes
 
 app.use(loginRouter)
@@ -120,6 +116,9 @@ app.use(adminAuthorization)
 
 app.use(aboutRouter)
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+});
 
 app.listen(port, () => {
     console.log("Listening...")
