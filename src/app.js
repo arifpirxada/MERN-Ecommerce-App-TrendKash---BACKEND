@@ -53,10 +53,9 @@ app.use(express.static(path.join(__dirname, "../dist")))
 app.use(cookieParser())
 app.use(express.json())
 
-
-app.get("/", (req, res) => {
-    res.send("hello world!")
-})
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+});
 
 // auth routes
 
